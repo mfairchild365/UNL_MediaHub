@@ -38,6 +38,8 @@ class UNL_MediaHub_DefaultHomepage implements UNL_MediaHub_CacheableInterface
         );
         $top_media = new UNL_MediaHub_MediaList($options);
         $top_media->run();
+
+        $after_date = date('-4 months');
         
         //return $top_media->items;
         $limit = 6;
@@ -47,6 +49,11 @@ class UNL_MediaHub_DefaultHomepage implements UNL_MediaHub_CacheableInterface
             if (count($media_list) >= $limit) {
                 //Break out of the loop once we have reached 6 videos
                 break;
+            }
+
+            if (strtotime($media->datecreated) < $after_date) {
+                //We only want media that was added in the last 4 months
+                continue;
             }
 
             //Get the media's feeds
